@@ -321,7 +321,8 @@ void PlayScene::GUI_Function() const
 	{
 		m_pBall->doThrow();
 		m_pBall->throwPosition = glm::vec2(xRampPos, yRampPos - height - 15);
-		m_pBall->getRigidBody()->acceleration = glm::vec2((9.8 * sin(angle) * cos(angle)), (9.8 * sin(angle) * sin(angle)));
+		//m_pBall->getRigidBody()->acceleration = glm::vec2((9.8 * sin(angle) * cos(angle)), (9.8 * sin(angle) * sin(angle)));
+		m_pBall->getRigidBody()->acceleration = glm::vec2(9.8 * cos(angle), 9.8 * sin(angle));
 	}
 
 	// Display distance
