@@ -210,9 +210,9 @@ void PlayScene::start()
 	m_pAccLabel->setParent(this);
 	addChild(m_pAccLabel);
 
-	m_pAngleLabel = new Label("Angle", "Consolas", 15, white, glm::vec2(400.0f, 110.0f));
+	/*m_pAngleLabel = new Label("Angle", "Consolas", 15, white, glm::vec2(400.0f, 110.0f));
 	m_pAngleLabel->setParent(this);
-	addChild(m_pAngleLabel);
+	addChild(m_pAngleLabel);*/
 
 }
 

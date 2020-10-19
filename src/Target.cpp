@@ -93,6 +93,7 @@ void Target::m_checkBounds()
 	{
 		getTransform()->position.x = wall - 15;
 		getRigidBody()->velocity.x = 0;
+		getRigidBody()->acceleration.x = 0;
 	}
 }
 
