@@ -190,30 +190,46 @@ void PlayScene::start()
 	/* Instructions Label */
 	const SDL_Color white = { 255, 255, 255, 255 };
 	const SDL_Color blue = { 0, 0, 255, 255 };
-	m_pInstructionsLabel = new Label("Press the backtick (`) character to toggle Debug View", "Consolas", 15, white);
+	m_pInstructionsLabel = new Label("Press the backtick (`) character to toggle Debug View", "Consolas", 12, white);
 	m_pInstructionsLabel->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.5f, 550.0f);
 	addChild(m_pInstructionsLabel);
 
-	m_pInstructionsLabel = new Label("Scale = 5 meters per pixel", "Consolas", 15, white);
+	m_pInstructionsLabel = new Label("Scale = 5 meters per pixel", "Consolas", 12, white);
 	m_pInstructionsLabel->getTransform()->position = glm::vec2(400, 30.0f);
 	addChild(m_pInstructionsLabel);
 
-	m_pdistanceLabel = new Label("Distance", "Consolas", 15, white, glm::vec2(400.0f, 50.0f));
+	m_pdistanceLabel = new Label("Distance", "Consolas", 12, white, glm::vec2(400.0f, 45.0f));
 	m_pdistanceLabel->setParent(this);
 	addChild(m_pdistanceLabel);
 
-	m_pVelocityLabel = new Label("Velocity", "Consolas", 15, white, glm::vec2(400.0f, 70.0f)); 
+	m_pVelocityLabel = new Label("Velocity", "Consolas", 12, white, glm::vec2(400.0f, 60.0f)); 
 	m_pVelocityLabel->setParent(this);
 	addChild(m_pVelocityLabel);
 
-	m_pAccLabel = new Label("Acceleration", "Consolas", 15, white, glm::vec2(400.0f, 90.0f));
+	m_pAccLabel = new Label("Acceleration", "Consolas", 12, white, glm::vec2(400.0f, 75.0f));
 	m_pAccLabel->setParent(this);
 	addChild(m_pAccLabel);
 
-	/*m_pAngleLabel = new Label("Angle", "Consolas", 15, white, glm::vec2(400.0f, 110.0f));
+	m_pAngleLabel = new Label("Angle of the ramp", "Consolas", 12, white, glm::vec2(400.0f, 90.0f));
 	m_pAngleLabel->setParent(this);
-	addChild(m_pAngleLabel);*/
+	addChild(m_pAngleLabel);
 
+	// Fnet
+	m_pFNetLabel = new Label("Net Force", "Consolas", 12, white, glm::vec2(400.0f, 105.0f));
+	m_pFNetLabel->setParent(this);
+	addChild(m_pFNetLabel);
+	// FNormal
+	m_pFNormalLabel = new Label("Normal Force", "Consolas", 12, white, glm::vec2(400.0f, 120.0f));
+	m_pFNormalLabel->setParent(this);
+	addChild(m_pFNormalLabel);
+	// FGravity
+	m_pFGravityLabel = new Label("Force of Gravity", "Consolas", 12, white, glm::vec2(400.0f, 135.0f));
+	m_pFGravityLabel->setParent(this);
+	addChild(m_pFGravityLabel);
+	// FFriction
+	m_pFFrictionLabel = new Label("Friction Force", "Consolas", 12, white, glm::vec2(400.0f, 150.0f));
+	m_pFFrictionLabel->setParent(this);
+	addChild(m_pFFrictionLabel);
 }
 
 void PlayScene::GUI_Function() const
@@ -224,22 +240,8 @@ void PlayScene::GUI_Function() const
 	// See examples by uncommenting the following - also look at imgui_demo.cpp in the IMGUI filter
 	//ImGui::ShowDemoWindow();
 	
-	ImGui::SetNextWindowPos(ImVec2(250,150)); // hardcoded the position of imgui
+	ImGui::SetNextWindowPos(ImVec2(250,165)); // hardcoded the position of imgui
 	ImGui::Begin("Physics Control", NULL, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_MenuBar );
-
-	//if (ImGui::Button("Throw"))
-	//{
-	//	m_pBall->doThrow();
-	//	// Display angle
-	//	float bvelocityX = m_pBall->getRigidBody()->velocity.x;
-	//	float bvelocityY = -m_pBall->getRigidBody()->velocity.y;
-	//	if ((bvelocityY / bvelocityX)>(-2/PI)|| (bvelocityY / bvelocityX) < (2 / PI))
-	//	{
-	//		float radAngle = atan(bvelocityY / bvelocityX);
-	//		float degAngle = (radAngle / PI) * 180;
-	//		m_pAngleLabel->setText("Angle = " + std::to_string(degAngle) + " degree");
-	//	}
-	//}
 
 	
 
@@ -251,29 +253,6 @@ void PlayScene::GUI_Function() const
 		m_pBall->isGravityEnabled = gravcheck;
 	}
 	
-	// move the player
-	/*static float xPlayerPos = 75.0f;
-	if (ImGui::SliderFloat("Player Position X", &xPlayerPos, 0, 800))
-	{
-		m_pPlayer->getTransform()->position.x = xPlayerPos;
-		m_pBall->throwPosition = glm::vec2(xPlayerPos, m_pPlayer->getTransform()->position.y);
-
-	}*/
-	
-	// adjust player's throw
-	/*static float velocity[2] = { 0,0 };
-	if (ImGui::SliderFloat2("Throw Speed", velocity, 0, 100) )
-	{
-		m_pBall->throwSpeed = glm::vec2(velocity[0], -velocity[1]);
-	}*/
-
-	// move the enemy
-	/*static float xEnemyPos = 700.0f;
-	if (ImGui::SliderFloat("Enemy Position X", &xEnemyPos, 0, 800))
-	{
-		m_pPlaneSprite->getTransform()->position.x = xEnemyPos;
-	}*/
-
 	// Mass
 	static float mass = 1.0f;
 	ImGui::SliderFloat("Mass in kg", &mass, 1.0f, 200.0f);
@@ -299,18 +278,30 @@ void PlayScene::GUI_Function() const
 	static float coefficient = 0.1f;
 	ImGui::SliderFloat("Kinetic Coefficient", &coefficient, 0.0f, 1.0f);
 	float friction = coefficient * -9.8;
+	
 
+	
 	if (m_pBall->getTransform()->position.y + 15 >= 465 && m_pBall->getRigidBody()->velocity.x > 1)
 	{
-
+		
+		
+		m_pFNormalLabel->setText("Normal Force = " + std::to_string(mass * 9.8));
+		m_pFGravityLabel->setText("Force of Gravity = " + std::to_string(mass * -9.8));
 		if (m_pBall->getRigidBody()->velocity.x < 1.5f)
 		{
 			m_pBall->getRigidBody()->acceleration = glm::vec2(0, 0);
 			m_pBall->getRigidBody()->velocity.x = 0;
+			m_pAccLabel->setText("Acceleration = " + std::to_string(m_pBall->getRigidBody()->acceleration.x));
+			m_pFFrictionLabel->setText("Friction Force = " + std::to_string(mass * m_pBall->getRigidBody()->acceleration.x));
+			m_pFNetLabel->setText("Net Force = " + std::to_string(mass * m_pBall->getRigidBody()->acceleration.x));
+			
 		}
 		else
 		{
 			m_pBall->getRigidBody()->acceleration = glm::vec2(friction, 0);
+			m_pAccLabel->setText("Acceleration = " + std::to_string(friction));
+			m_pFFrictionLabel->setText("Friction Force = " + std::to_string(mass * friction));
+			m_pFNetLabel->setText("Net Force = " + std::to_string(mass * friction));
 		}
 
 	}
@@ -321,8 +312,18 @@ void PlayScene::GUI_Function() const
 	{
 		m_pBall->doThrow();
 		m_pBall->throwPosition = glm::vec2(xRampPos, yRampPos - height - 15);
-		//m_pBall->getRigidBody()->acceleration = glm::vec2((9.8 * sin(angle) * cos(angle)), (9.8 * sin(angle) * sin(angle)));
 		m_pBall->getRigidBody()->acceleration = glm::vec2(9.8 * cos(angle), 9.8 * sin(angle));
+		m_pAccLabel->setText("Acceleration = " + std::to_string((9.8 * sin(angle))));
+		m_pFNetLabel->setText("Net Force = " + std::to_string(mass * (9.8 * sin(angle))));
+		m_pFNormalLabel->setText("Normal Force = " + std::to_string(mass * (9.8 * cos(angle))));
+		m_pFGravityLabel->setText("Force of Gravity = " + std::to_string(mass * -9.8));
+
+		//Display angle
+		if ((height / width)>(-2/PI)|| (height/ width) < (2 / PI))
+		{
+			float degAngle = (angle / PI) * 180;
+			m_pAngleLabel->setText("Angle of the ramp = " + std::to_string(degAngle) + " degree");
+		}
 	}
 
 	// Display distance
@@ -341,11 +342,6 @@ void PlayScene::GUI_Function() const
 	float magnitude = sqrt(x * x + y * y);
 	m_pVelocityLabel->setText("Velocity = " + std::to_string((magnitude)));
 
-	// Display Acceleration
-	float xA = m_pBall->getRigidBody()->acceleration.x;
-	float yA = m_pBall->getRigidBody()->acceleration.y;
-	float magnitudeA = sqrt(xA * xA + yA * yA);
-	m_pAccLabel->setText("Acceleration = " + std::to_string(magnitudeA));
 	
 
 	ImGui::End();

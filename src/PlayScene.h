@@ -44,6 +44,11 @@ private:
 	Label* m_pVelocityLabel;
 	Label* m_pAccLabel;
 	Label* m_pAngleLabel;
+	Label* m_pFFrictionLabel;
+	Label* m_pFNormalLabel;
+	Label* m_pFGravityLabel;
+	Label* m_pFNetLabel;
+
 };
 
 #endif /* defined (__PLAY_SCENE__) */
